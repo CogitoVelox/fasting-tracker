@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+fasting.db
+*.db
+.pytest_cache/
+.ruff_cache/
+streak_test.py
+tags

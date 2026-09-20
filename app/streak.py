@@ -1,5 +1,13 @@
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
+
+
+def _as_aware_utc(dt):
+    if dt is None:
+        return None
+    if dt.tzinfo is None:
+        return dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 def credited_days(
@@ -9,6 +17,9 @@ def credited_days(
     tz_name: str,
     now: datetime | None = None,
 ) -> set:
+    started_at = _as_aware_utc(started_at)
+    ended_at = _as_aware_utc(ended_at)
+
     tz = ZoneInfo(tz_name)
     now = now or datetime.now(started_at.tzinfo)
     effective_end = ended_at or now
@@ -30,8 +41,9 @@ def credited_days(
 
     return days
 
+
 def compute_streak(
-    facts: list,
+    fasts: list,
     goal_hours: float,
     tz_name: str,
     now: datetime | None = None,

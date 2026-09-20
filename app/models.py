@@ -8,6 +8,7 @@ from app.db import Base
 
 class Fast(Base):
     __tablename__ = "fasts"
+
     @property
     def duration_seconds(self) -> float | None:
         if self.ended_at is None:
