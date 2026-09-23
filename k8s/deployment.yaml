@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fasting-tracker
+  labels:
+    app: fasting-tracker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fasting-tracker
+  template:
+    metadata:
+      labels:
+        app: fasting-tracker
+    spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+      containers:
+        - name: fasting-tracker
+          image: ghcr.io/cogitovelox/fasting-tracker:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: sqlite:////data/fasting.db
+            - name: FAST_GOAL_HOURS
+              value: "16"
+            - name: TIMEZONE_NAME
+              value: America/New_York
